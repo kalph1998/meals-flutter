@@ -1,33 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:meals/models/meal.dart';
+import 'package:meals/screens/meal_detail_screen.dart';
 
 class MealItem extends StatelessWidget {
+  final String id;
   final String title;
   final String imageUrl;
   final int duration;
   final Complexity complexity;
   final Affordability affordability;
 
-  const MealItem(
-      {Key? key,
-      required this.title,
-      required this.imageUrl,
-      required this.duration,
-      required this.affordability,
-      required this.complexity})
-      : super(key: key);
+  const MealItem({
+    Key? key,
+    required this.title,
+    required this.imageUrl,
+    required this.duration,
+    required this.affordability,
+    required this.complexity,
+    required this.id,
+  }) : super(key: key);
 
-  void selectMeal() {}
+  void selectMeal(BuildContext ctx) {
+    Navigator.of(ctx).pushNamed(MealDetailScreen.routeName, arguments: id);
+  }
 
   String get complexityText {
-    // if (complexity == Complexity.Simple) {
-    //   return 'Simple';
-    // } else if (complexity == Complexity.Hard) {
-    //   return 'Hard';
-    // } else if (complexity == Complexity.Challenging) {
-    //   return 'Challenging';
-    // }
-
     switch (complexity) {
       case Complexity.Simple:
         return 'Simple';
@@ -40,10 +37,25 @@ class MealItem extends StatelessWidget {
     }
   }
 
+  String get affordabilityText {
+    switch (affordability) {
+      case Affordability.Affordable:
+        return 'Affordable';
+      case Affordability.Luxurious:
+        return 'Expensive';
+      case Affordability.Pricey:
+        return 'Pricy';
+      default:
+        return 'Unknown';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: selectMeal,
+      onTap: () {
+        selectMeal(context);
+      },
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
@@ -113,6 +125,18 @@ class MealItem extends StatelessWidget {
                         width: 6,
                       ),
                       Text(complexityText)
+                    ],
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.attach_money,
+                      ),
+                      const SizedBox(
+                        width: 6,
+                      ),
+                      Text(affordabilityText)
                     ],
                   ),
                 ],
