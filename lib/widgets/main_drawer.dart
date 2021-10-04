@@ -1,10 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:meals/screens/filter_screen.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Widget buildList(String text, IconData icon, Function tapHandler) {
+      return ListTile(
+        leading: Icon(
+          icon,
+          size: 26,
+        ),
+        title: Text(
+          text,
+          style: const TextStyle(
+              fontFamily: 'RobotoCondensed',
+              fontSize: 24,
+              fontWeight: FontWeight.bold),
+        ),
+        onTap: () {
+          tapHandler();
+        },
+      );
+    }
+
     return Drawer(
       child: Column(
         children: [
@@ -25,34 +45,12 @@ class MainDrawer extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          ListTile(
-            leading: const Icon(
-              Icons.restaurant,
-              size: 26,
-            ),
-            title: const Text(
-              'Meals',
-              style: TextStyle(
-                  fontFamily: 'RobotoCondensed',
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
-            ),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: const Icon(
-              Icons.settings,
-              size: 26,
-            ),
-            title: const Text(
-              'Filter',
-              style: TextStyle(
-                  fontFamily: 'RobotoCondensed',
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
-            ),
-            onTap: () {},
-          ),
+          buildList('Meals', Icons.restaurant, () {
+            Navigator.of(context).pushReplacementNamed('/');
+          }),
+          buildList('Filter', Icons.settings, () {
+            Navigator.of(context).pushReplacementNamed(FilterScreen.routeName);
+          })
         ],
       ),
     );
